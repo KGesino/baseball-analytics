@@ -66,30 +66,34 @@ CREATE TABLE lineups (
 -- ── At Bats ──────────────────────────────────────────────────
 CREATE TABLE at_bats (
     at_bat_id       SERIAL PRIMARY KEY,
-    game_id         INT     REFERENCES games(game_id),
-    batter_id       INT     REFERENCES players(player_id),
-    pitcher_id      INT     REFERENCES players(player_id),
-    at_bat_number   INT,
-    inning          INT,
-    half_inning     VARCHAR(3) CHECK (half_inning IN ('top', 'bot')),
-    outs_before     INT     CHECK (outs_before BETWEEN 0 AND 2),
+    game_id         BIGINT,
+    at_bat_number   BIGINT,
+    batter_id       BIGINT,
+    pitcher_id      BIGINT,
+    inning          BIGINT,
+    half_inning     TEXT,
+    outs_before     BIGINT,
     runner_on_1b    BOOLEAN DEFAULT FALSE,
     runner_on_2b    BOOLEAN DEFAULT FALSE,
     runner_on_3b    BOOLEAN DEFAULT FALSE,
-    result          VARCHAR(50),
+    hit_type        TEXT,
+    home_score      BIGINT,
+    away_score      BIGINT,
+    game_date       TIMESTAMP,
+    result          TEXT,
     is_hit          BOOLEAN DEFAULT FALSE,
-    is_rbi          BOOLEAN DEFAULT FALSE,
-    runs_scored     INT     DEFAULT 0
+    runs_scored     BIGINT DEFAULT 0,
+    is_rbi          BOOLEAN DEFAULT FALSE
 );
 
 
 -- ── Pitches ──────────────────────────────────────────────────
 CREATE TABLE pitches (
     pitch_id        SERIAL PRIMARY KEY,
-    at_bat_id       INT     REFERENCES at_bats(at_bat_id),
-    game_id         INT     REFERENCES games(game_id),
-    pitcher_id      INT     REFERENCES players(player_id),
-    batter_id       INT     REFERENCES players(player_id),
+    at_bat_id       INT,
+    game_id         INT,
+    pitcher_id      INT,
+    batter_id       INT,
     at_bat_number   INT,
     pitch_number    INT,
     pitch_type      VARCHAR(10),
